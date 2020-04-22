@@ -88,6 +88,19 @@ I use swagger to test or run the application it self
 http://localhost:8181/docs/swagger-ui.html
 ```
 
+## Open H2 Console
+```
+http://localhost:8181/h2-console
+```
+
+Saved settings : Generic H2 (Embedded)
+Setting name :  Generic H2 (Embedded)
+Driver class : org.h2.Driver
+JDBC URL : jdbc:h2:mem:testdb
+User name : sa
+Password : 
+
+
 <!-- ROADMAP -->
 ## Roadmap
 
