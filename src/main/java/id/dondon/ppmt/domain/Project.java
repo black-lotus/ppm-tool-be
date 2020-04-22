@@ -1,5 +1,6 @@
 package id.dondon.ppmt.domain;
 
+import id.dondon.ppmt.constant.ProjectField;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -12,23 +13,29 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = ProjectField.PROJECT_NAME)
     @NotBlank(message = "Project name is required")
     private String projectName;
 
     @NotBlank(message = "Project Identifier is required")
     @Size(min =4, max=5, message = "Please use 4 to 5 characters")
-    @Column(unique = true, updatable = false)
+    @Column(name = ProjectField.PROJECT_IDENTIFIER, unique = true, updatable = false)
     private String projectIdentifier;
 
+    @Column(name = ProjectField.DESCRIPTION)
     @NotBlank(message = "Project description is requiredI")
     private String description;
 
+    @Column(name = ProjectField.START_DATE)
     private Date startDate;
 
+    @Column(name = ProjectField.END_DATE)
     private Date endDate;
 
+    @Column(name = ProjectField.CREATED_AT)
     private Date createdAt;
 
+    @Column(name = ProjectField.UPDATED_AT)
     private Date updatedAt;
 
     public Project() {
