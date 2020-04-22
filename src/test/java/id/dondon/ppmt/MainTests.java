@@ -1,4 +1,4 @@
-package io.agileintelligence.ppmt;
+package id.dondon.ppmt;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class PpmtApplicationTests {
+public class MainTests {
 
     @Test
     public void contextLoads() {

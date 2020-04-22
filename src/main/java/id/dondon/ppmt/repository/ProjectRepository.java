@@ -1,14 +1,14 @@
-package io.agileintelligence.ppmt.repository;
+package id.dondon.ppmt.repository;
 
 
-import io.agileintelligence.ppmt.domain.Project;
+import id.dondon.ppmt.domain.Project;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProjectRepository extends CrudRepository<Project, Long> {
 
-    Project findByProjectIdentifier(String projectid);
+    Project findByProjectIdentifier(String projectId);
     Iterable<Project> findAll();
 
 

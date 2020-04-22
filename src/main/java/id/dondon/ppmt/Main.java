@@ -1,12 +1,12 @@
-package io.agileintelligence.ppmt;
+package id.dondon.ppmt;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PpmtApplication {
+public class Main {
 
     public static void main(String[] args) {
-        SpringApplication.run(PpmtApplication.class, args);
+        SpringApplication.run(Main.class, args);
     }
 }
