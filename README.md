@@ -93,12 +93,12 @@ http://localhost:8181/docs/swagger-ui.html
 http://localhost:8181/h2-console
 ```
 
-Saved settings : Generic H2 (Embedded)
-Setting name :  Generic H2 (Embedded)
-Driver class : org.h2.Driver
-JDBC URL : jdbc:h2:mem:testdb
-User name : sa
-Password : 
+1. Saved settings : Generic H2 (Embedded)
+2. Setting name :  Generic H2 (Embedded)
+3. Driver class : org.h2.Driver
+4. JDBC URL : jdbc:h2:mem:testdb
+5. User name : sa
+6. Password : 
 
 
 <!-- ROADMAP -->
