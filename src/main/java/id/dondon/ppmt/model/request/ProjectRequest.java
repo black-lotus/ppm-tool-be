@@ -1,7 +1,7 @@
 package id.dondon.ppmt.model.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import id.dondon.ppmt.libraries.validators.ValidDate;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -22,11 +22,11 @@ public class ProjectRequest {
   private String description;
 
   @JsonProperty("start_date")
-  @JsonFormat(pattern = "yyyy-MM-dd")
+  //@ValidDate
   private Date startDate;
 
   @JsonProperty("end_date")
-  @JsonFormat(pattern = "yyyy-MM-dd")
+  //@ValidDate
   private Date endDate;
 
   public ProjectRequest() {

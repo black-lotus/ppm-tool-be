@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>ppmt</name>
+    <name>ppmt-be</name>
     <description>Personal Project Management Tool</description>
 
     <parent>
@@ -87,11 +87,13 @@
         </dependency>
         <!-- //Swagger -->
 
+        <!-- Bean Mapper -->
         <dependency>
             <groupId>ma.glasnost.orika</groupId>
             <artifactId>orika-core</artifactId>
             <version>${orika.version}</version>
         </dependency>
+        <!-- //Bean Mapper -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
