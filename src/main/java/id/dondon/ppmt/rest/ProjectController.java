@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +34,7 @@ public class ProjectController {
     private MapValidationErrorsService mapValidationErrorsService;
 
     @PostMapping
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody ProjectRequest projectRequest , BindingResult result){
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody ProjectRequest projectRequest, BindingResult result) {
         ResponseEntity<?> errorMap = mapValidationErrorsService.MapValidationErrorsService(result);
         if (errorMap != null) return errorMap;
 
@@ -44,7 +45,7 @@ public class ProjectController {
     }
 
     @GetMapping(ApiPath.FIND_PROJECT)
-    public ResponseEntity<?> getProjectById(@PathVariable String projectId){
+    public ResponseEntity<?> getProjectById(@PathVariable String projectId) {
         Project project = projectService.findProjectByIdentifier(projectId);
         ProjectResponse projectResponse = BeanMapper.map(project, ProjectResponse.class);
 
@@ -67,5 +68,16 @@ public class ProjectController {
         projectService.deleteProjectByIdentifier(projectId);
 
         return new ResponseEntity<String>("Project "+projectId+" deleted successfully", HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateProject(@Valid @RequestBody ProjectRequest projectRequest, BindingResult result) {
+        ResponseEntity<?> errorMap = mapValidationErrorsService.MapValidationErrorsService(result);
+        if (errorMap != null) return errorMap;
+
+        Project newProject = projectService.updateProject(BeanMapper.map(projectRequest, Project.class));
+        ProjectResponse projectResponse = BeanMapper.map(newProject, ProjectResponse.class);
+
+        return new ResponseEntity<ProjectResponse>(projectResponse, HttpStatus.ACCEPTED);
     }
 }

@@ -13,7 +13,7 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
-    public Project saveProject(Project project){
+    public Project saveProject(Project project) {
         try {
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
             return projectRepository.save(project);
@@ -42,6 +42,20 @@ public class ProjectService {
         }
 
         projectRepository.delete(project);
+    }
+
+    public Project updateProject(Project project) {
+        Project existingProject = projectRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+        if (existingProject == null) {
+            throw new ProjectNotFoundException("Project not found");
+        }
+
+        existingProject.setDescription(project.getDescription());
+        existingProject.setProjectName(project.getProjectName());
+        existingProject.setStartDate(project.getStartDate());
+        existingProject.setEndDate(project.getEndDate());
+
+        return projectRepository.save(existingProject);
     }
 
 }
