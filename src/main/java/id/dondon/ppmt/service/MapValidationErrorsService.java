@@ -1,6 +1,5 @@
 package id.dondon.ppmt.service;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,13 +13,13 @@ import java.util.Map;
 public class MapValidationErrorsService {
 
     public ResponseEntity<?> MapValidationErrorsService(BindingResult result){
-        if(result.hasErrors()){
-
+        if (result.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
 
-            for(FieldError error: result.getFieldErrors()){
+            for (FieldError error: result.getFieldErrors()) {
                 errorMap.put(error.getField(), error.getDefaultMessage());
             }
+
             return new ResponseEntity<Map<String,String>>(errorMap, HttpStatus.BAD_REQUEST);
         }
 
