@@ -1,5 +1,6 @@
 package id.dondon.ppmt.model.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import id.dondon.ppmt.libraries.validators.ValidDate;
 import java.util.Date;
@@ -14,18 +15,20 @@ public class ProjectRequest {
 
   @JsonProperty("project_identifier")
   @NotBlank(message = "Project Identifier is required")
-  @Size(min =4, max=5, message = "Please use 4 to 5 characters")
+  @Size(min = 4, max = 5, message = "Please use 4 to 5 characters")
   private String projectIdentifier;
 
   @JsonProperty("description")
-  @NotBlank(message = "Project description is requiredI")
+  @NotBlank(message = "Project description is required")
   private String description;
 
   @JsonProperty("start_date")
+  @JsonFormat(pattern = "yyyy-MM-dd")
   //@ValidDate
   private Date startDate;
 
   @JsonProperty("end_date")
+  @JsonFormat(pattern = "yyyy-MM-dd")
   //@ValidDate
   private Date endDate;
 
