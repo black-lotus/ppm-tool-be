@@ -1,5 +1,6 @@
 package id.dondon.ppmt.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.dondon.ppmt.constant.BacklogField;
 import id.dondon.ppmt.constant.ProjectField;
 import java.io.Serializable;
@@ -41,6 +42,7 @@ public class Project implements Serializable {
     private Date updatedAt;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = BacklogField.PROJECT)
+    @JsonIgnore
     private Backlog backlog;
 
     public Project() {

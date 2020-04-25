@@ -4,6 +4,7 @@ import id.dondon.ppmt.domain.Backlog;
 import id.dondon.ppmt.domain.ProjectTask;
 import id.dondon.ppmt.repository.BacklogRepository;
 import id.dondon.ppmt.repository.ProjectTaskRepository;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -26,6 +27,8 @@ public class ProjectTaskService {
     Integer backlogSequence = backlog.getPTSequence();
     backlogSequence++;
 
+    backlog.setPTSequence(backlogSequence);
+
     // Add Sequence to Project Task
     projectTask.setProjectSequence(projectIdentifier+"-"+backlogSequence);
     projectTask.setProjectIdentifier(projectIdentifier);
@@ -35,7 +38,15 @@ public class ProjectTaskService {
       projectTask.setStatus("TO_DO");
     }
 
+    if (Objects.isNull(projectTask.getPriority())) {
+      projectTask.setPriority(3);
+    }
+
     return projectTaskRepository.save(projectTask);
+  }
+
+  public Iterable<ProjectTask>findBacklogByProjectIdentifier(String projectIdentifier) {
+    return projectTaskRepository.findByProjectIdentifierOrderByPriority(projectIdentifier);
   }
 
 }

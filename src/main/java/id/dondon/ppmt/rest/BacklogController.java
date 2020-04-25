@@ -1,17 +1,22 @@
 package id.dondon.ppmt.rest;
 
 import id.dondon.ppmt.constant.ApiPath;
+import id.dondon.ppmt.domain.Project;
 import id.dondon.ppmt.domain.ProjectTask;
 import id.dondon.ppmt.libraries.BeanMapper;
 import id.dondon.ppmt.model.request.ProjectTaskRequest;
+import id.dondon.ppmt.model.response.ProjectResponse;
 import id.dondon.ppmt.model.response.ProjectTaskResponse;
 import id.dondon.ppmt.service.MapValidationErrorService;
 import id.dondon.ppmt.service.ProjectTaskService;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.cglib.beans.BeanMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +48,17 @@ public class BacklogController {
     ProjectTaskResponse projectTaskResponse = BeanMapper.map(projectTaskSaved, ProjectTaskResponse.class);
 
     return new ResponseEntity<ProjectTaskResponse>(projectTaskResponse, HttpStatus.CREATED);
+  }
+
+  @GetMapping(ApiPath.GET_PROJECT_TASKS)
+  public Iterable<ProjectTaskResponse> getProjectBacklog(@PathVariable String projectIdentifier){
+    Iterable<ProjectTask> projectTasks = projectTaskService.findBacklogByProjectIdentifier(projectIdentifier);
+    List<ProjectTaskResponse> projectTaskResponses = new ArrayList<>();
+    for (ProjectTask projectTask : projectTasks) {
+      projectTaskResponses.add(BeanMapper.map(projectTask, ProjectTaskResponse.class));
+    }
+
+    return projectTaskResponses;
   }
 
 }
