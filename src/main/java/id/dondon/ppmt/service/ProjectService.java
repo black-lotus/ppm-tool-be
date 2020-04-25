@@ -1,21 +1,32 @@
 package id.dondon.ppmt.service;
 
-import id.dondon.ppmt.exceptions.ProjectNotFoundException;
-import id.dondon.ppmt.repository.ProjectRepository;
+import id.dondon.ppmt.domain.Backlog;
 import id.dondon.ppmt.domain.Project;
 import id.dondon.ppmt.exceptions.ProjectIdException;
-import org.springframework.beans.factory.annotation.Autowired;
+import id.dondon.ppmt.exceptions.ProjectNotFoundException;
+import id.dondon.ppmt.repository.BacklogRepository;
+import id.dondon.ppmt.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProjectService {
 
-    @Autowired
-    private ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
+    private final BacklogRepository backlogRepository;
+
+    public ProjectService(ProjectRepository projectRepository,
+        BacklogRepository backlogRepository) {
+        this.projectRepository = projectRepository;
+        this.backlogRepository = backlogRepository;
+    }
 
     public Project saveProject(Project project) {
         try {
-            project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            Backlog backlog = new Backlog();
+            backlog.setProject(project);
+            backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            project.setBacklog(backlog);
+
             return projectRepository.save(project);
         } catch (Exception e) {
             throw new ProjectIdException("Project ID '"+project.getProjectIdentifier().toUpperCase()+"' already exists");
@@ -54,6 +65,7 @@ public class ProjectService {
         existingProject.setProjectName(project.getProjectName());
         existingProject.setStartDate(project.getStartDate());
         existingProject.setEndDate(project.getEndDate());
+        existingProject.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
 
         return projectRepository.save(existingProject);
     }

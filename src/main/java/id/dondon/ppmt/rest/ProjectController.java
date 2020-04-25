@@ -10,7 +10,6 @@ import id.dondon.ppmt.service.ProjectService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -27,11 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(ApiPath.BASE_PATH)
 public class ProjectController {
 
-    @Autowired
-    private ProjectService projectService;
+    private final ProjectService projectService;
+    private final MapValidationErrorsService mapValidationErrorsService;
 
-    @Autowired
-    private MapValidationErrorsService mapValidationErrorsService;
+    public ProjectController(ProjectService projectService,
+        MapValidationErrorsService mapValidationErrorsService) {
+        this.projectService = projectService;
+        this.mapValidationErrorsService = mapValidationErrorsService;
+    }
 
     @PostMapping
     public ResponseEntity<?> createNewProject(@Valid @RequestBody ProjectRequest projectRequest, BindingResult result) {

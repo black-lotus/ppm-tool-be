@@ -1,13 +1,15 @@
 package id.dondon.ppmt.domain;
 
+import id.dondon.ppmt.constant.BacklogField;
 import id.dondon.ppmt.constant.ProjectField;
+import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
-public class Project {
+public class Project implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +39,9 @@ public class Project {
 
     @Column(name = ProjectField.UPDATED_AT)
     private Date updatedAt;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = BacklogField.PROJECT)
+    private Backlog backlog;
 
     public Project() {
     }
@@ -105,6 +110,14 @@ public class Project {
         this.updatedAt = updatedAt;
     }
 
+    public Backlog getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Backlog backlog) {
+        this.backlog = backlog;
+    }
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = new Date();
@@ -115,4 +128,18 @@ public class Project {
         this.updatedAt = new Date();
     }
 
+    @Override
+    public String toString() {
+        return "Project{" +
+            "id=" + id +
+            ", projectName='" + projectName + '\'' +
+            ", projectIdentifier='" + projectIdentifier + '\'' +
+            ", description='" + description + '\'' +
+            ", startDate=" + startDate +
+            ", endDate=" + endDate +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            ", backlog=" + backlog +
+            '}';
+    }
 }

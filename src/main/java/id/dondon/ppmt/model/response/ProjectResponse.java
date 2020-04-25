@@ -2,9 +2,10 @@ package id.dondon.ppmt.model.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.util.Date;
 
-public class ProjectResponse {
+public class ProjectResponse implements Serializable {
 
   @JsonProperty("id")
   private Long id;
@@ -25,6 +26,9 @@ public class ProjectResponse {
   @JsonProperty("end_date")
   @JsonFormat(pattern = "yyyy-MM-dd")
   private Date endDate;
+
+  @JsonProperty("backlog")
+  private BacklogResponse backlog;
 
   public ProjectResponse() {
   }
@@ -77,4 +81,24 @@ public class ProjectResponse {
     this.endDate = endDate;
   }
 
+  public BacklogResponse getBacklog() {
+    return backlog;
+  }
+
+  public void setBacklog(BacklogResponse backlog) {
+    this.backlog = backlog;
+  }
+
+  @Override
+  public String toString() {
+    return "ProjectResponse{" +
+        "id=" + id +
+        ", projectName='" + projectName + '\'' +
+        ", projectIdentifier='" + projectIdentifier + '\'' +
+        ", description='" + description + '\'' +
+        ", startDate=" + startDate +
+        ", endDate=" + endDate +
+        ", backlog=" + backlog +
+        '}';
+  }
 }
