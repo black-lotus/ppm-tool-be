@@ -1,5 +1,6 @@
 package id.dondon.ppmt.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.dondon.ppmt.constant.ProjectTaskField;
 import java.io.Serializable;
 import javax.persistence.*;
@@ -43,6 +44,11 @@ public class ProjectTask implements Serializable {
 
   @Column(name = ProjectTaskField.UPDATED_AT)
   private Date updatedAt;
+
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+  @JoinColumn(name = ProjectTaskField.BACKLOG_ID, updatable = false, nullable = false)
+  @JsonIgnore
+  private Backlog backlog;
 
   public ProjectTask() {
   }
@@ -127,6 +133,14 @@ public class ProjectTask implements Serializable {
     this.updatedAt = updatedAt;
   }
 
+  public Backlog getBacklog() {
+    return backlog;
+  }
+
+  public void setBacklog(Backlog backlog) {
+    this.backlog = backlog;
+  }
+
   @PrePersist
   protected void onCreate(){
     this.createdAt = new Date();
@@ -150,7 +164,7 @@ public class ProjectTask implements Serializable {
         ", projectIdentifier='" + projectIdentifier + '\'' +
         ", createdAt=" + createdAt +
         ", updatedAt=" + updatedAt +
+        ", backlog=" + backlog +
         '}';
   }
-
 }

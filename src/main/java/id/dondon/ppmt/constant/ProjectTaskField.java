@@ -12,5 +12,6 @@ public interface ProjectTaskField {
   String PROJECT_IDENTIFIER = "project_identifier";
   String CREATED_AT = "created_at";
   String UPDATED_AT = "updated_at";
+  String BACKLOG_ID = "backlog_id";
 
 }

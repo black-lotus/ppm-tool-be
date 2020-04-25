@@ -3,6 +3,9 @@ package id.dondon.ppmt.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.dondon.ppmt.constant.BacklogField;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -35,6 +39,9 @@ public class Backlog implements Serializable {
   @JoinColumn(name= BacklogField.PROJECT_ID, nullable = false)
   @JsonIgnore
   private Project project;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = BacklogField.BACKLOG)
+  private List<ProjectTask> projectTasks = new ArrayList<>();
 
   public Backlog() {
   }
@@ -79,6 +86,14 @@ public class Backlog implements Serializable {
     this.project = project;
   }
 
+  public List<ProjectTask> getProjectTasks() {
+    return projectTasks;
+  }
+
+  public void setProjectTasks(List<ProjectTask> projectTasks) {
+    this.projectTasks = projectTasks;
+  }
+
   @Override
   public String toString() {
     return "Backlog{" +
@@ -86,6 +101,7 @@ public class Backlog implements Serializable {
         ", pTSequence=" + pTSequence +
         ", projectIdentifier='" + projectIdentifier + '\'' +
         ", project=" + project +
+        ", projectTasks=" + projectTasks +
         '}';
   }
 }

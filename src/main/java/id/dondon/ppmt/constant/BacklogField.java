@@ -7,5 +7,6 @@ public interface BacklogField {
   String PROJECT_IDENTIFIER = "project_identifier";
   String PROJECT = "project";
   String PROJECT_ID = "project_id";
+  String BACKLOG = "backlog";
 
 }
