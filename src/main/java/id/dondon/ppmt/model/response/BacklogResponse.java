@@ -2,6 +2,7 @@ package id.dondon.ppmt.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.util.List;
 
 public class BacklogResponse implements Serializable {
 
@@ -13,6 +14,9 @@ public class BacklogResponse implements Serializable {
 
   @JsonProperty("project_identifier")
   private String projectIdentifier;
+
+  @JsonProperty("project_tasks")
+  private List<ProjectTaskResponse> projectTasks;
 
   public BacklogResponse() {
   }
@@ -41,12 +45,22 @@ public class BacklogResponse implements Serializable {
     this.projectIdentifier = projectIdentifier;
   }
 
+  public List<ProjectTaskResponse> getProjectTasks() {
+    return projectTasks;
+  }
+
+  public void setProjectTasks(
+      List<ProjectTaskResponse> projectTasks) {
+    this.projectTasks = projectTasks;
+  }
+
   @Override
   public String toString() {
     return "BacklogResponse{" +
         "id=" + id +
         ", pTSequence=" + pTSequence +
         ", projectIdentifier='" + projectIdentifier + '\'' +
+        ", projectTasks=" + projectTasks +
         '}';
   }
 }
