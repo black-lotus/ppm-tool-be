@@ -3,11 +3,12 @@ package id.dondon.ppmt.model.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import id.dondon.ppmt.libraries.validators.ValidDate;
+import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class ProjectRequest {
+public class ProjectRequest implements Serializable {
 
   @JsonProperty("project_name")
   @NotBlank(message = "Project name is required")
@@ -75,4 +76,14 @@ public class ProjectRequest {
     this.endDate = endDate;
   }
 
+  @Override
+  public String toString() {
+    return "ProjectRequest{" +
+        "projectName='" + projectName + '\'' +
+        ", projectIdentifier='" + projectIdentifier + '\'' +
+        ", description='" + description + '\'' +
+        ", startDate=" + startDate +
+        ", endDate=" + endDate +
+        '}';
+  }
 }

@@ -5,7 +5,7 @@ import id.dondon.ppmt.domain.Project;
 import id.dondon.ppmt.libraries.BeanMapper;
 import id.dondon.ppmt.model.request.ProjectRequest;
 import id.dondon.ppmt.model.response.ProjectResponse;
-import id.dondon.ppmt.service.MapValidationErrorsService;
+import id.dondon.ppmt.service.MapValidationErrorService;
 import id.dondon.ppmt.service.ProjectService;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,21 +23,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(ApiPath.BASE_PATH)
+@RequestMapping(ApiPath.BASE_PROJECT)
 public class ProjectController {
 
     private final ProjectService projectService;
-    private final MapValidationErrorsService mapValidationErrorsService;
+    private final MapValidationErrorService mapValidationErrorService;
 
     public ProjectController(ProjectService projectService,
-        MapValidationErrorsService mapValidationErrorsService) {
+        MapValidationErrorService mapValidationErrorService) {
         this.projectService = projectService;
-        this.mapValidationErrorsService = mapValidationErrorsService;
+        this.mapValidationErrorService = mapValidationErrorService;
     }
 
     @PostMapping
     public ResponseEntity<?> createNewProject(@Valid @RequestBody ProjectRequest projectRequest, BindingResult result) {
-        ResponseEntity<?> errorMap = mapValidationErrorsService.MapValidationErrorsService(result);
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
         if (errorMap != null) return errorMap;
 
         Project newProject = projectService.saveProject(BeanMapper.map(projectRequest, Project.class));
@@ -74,7 +74,7 @@ public class ProjectController {
 
     @PutMapping
     public ResponseEntity<?> updateProject(@Valid @RequestBody ProjectRequest projectRequest, BindingResult result) {
-        ResponseEntity<?> errorMap = mapValidationErrorsService.MapValidationErrorsService(result);
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
         if (errorMap != null) return errorMap;
 
         Project newProject = projectService.updateProject(BeanMapper.map(projectRequest, Project.class));

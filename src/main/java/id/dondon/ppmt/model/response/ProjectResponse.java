@@ -27,6 +27,14 @@ public class ProjectResponse implements Serializable {
   @JsonFormat(pattern = "yyyy-MM-dd")
   private Date endDate;
 
+  @JsonProperty("created_at")
+  @JsonFormat(pattern = "yyyy-MM-dd")
+  private Date createdAt;
+
+  @JsonProperty("updated_at")
+  @JsonFormat(pattern = "yyyy-MM-dd")
+  private Date updatedAt;
+
   @JsonProperty("backlog")
   private BacklogResponse backlog;
 
@@ -89,6 +97,22 @@ public class ProjectResponse implements Serializable {
     this.backlog = backlog;
   }
 
+  public Date getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public Date getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(Date updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
   @Override
   public String toString() {
     return "ProjectResponse{" +
@@ -98,7 +122,10 @@ public class ProjectResponse implements Serializable {
         ", description='" + description + '\'' +
         ", startDate=" + startDate +
         ", endDate=" + endDate +
+        ", createdAt=" + createdAt +
+        ", updatedAt=" + updatedAt +
         ", backlog=" + backlog +
         '}';
   }
+
 }
