@@ -32,7 +32,7 @@ public class Project {
     @Column(name = ProjectField.END_DATE)
     private Date endDate;
 
-    @Column(name = ProjectField.CREATED_AT)
+    @Column(name = ProjectField.CREATED_AT, updatable = false)
     private Date createdAt;
 
     @Column(name = ProjectField.UPDATED_AT)
