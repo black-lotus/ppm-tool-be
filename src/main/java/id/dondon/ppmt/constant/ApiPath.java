@@ -11,5 +11,6 @@ public interface ApiPath {
   String ADD_PROJECT_TASK = "/{projectIdentifier}";
   String GET_PROJECT_TASKS = "/{projectIdentifier}";
   String GET_PROJECT_TASK = "/{projectIdentifier}/{projectSequence}";
+  String UPDATE_PROJECT_TASK = "/{projectIdentifier}/{projectSequence}";
 
 }
