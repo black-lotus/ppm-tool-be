@@ -15,7 +15,7 @@ public class ProjectTask implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = ProjectTaskField.PROJECT_SEQUENCE, updatable = false)
+  @Column(name = ProjectTaskField.PROJECT_SEQUENCE, updatable = false, unique = true)
   private String projectSequence;
 
   @NotBlank(message = "Please include a project summary")

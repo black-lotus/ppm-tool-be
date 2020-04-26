@@ -10,5 +10,6 @@ public interface ApiPath {
   String BASE_BACKLOG = BASE_PATH + "/backlog";
   String ADD_PROJECT_TASK = "/{projectIdentifier}";
   String GET_PROJECT_TASKS = "/{projectIdentifier}";
+  String GET_PROJECT_TASK = "/{projectIdentifier}/{projectSequence}";
 
 }

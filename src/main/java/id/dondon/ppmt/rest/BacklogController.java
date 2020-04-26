@@ -61,4 +61,12 @@ public class BacklogController {
     return projectTaskResponses;
   }
 
+  @GetMapping(ApiPath.GET_PROJECT_TASK)
+  public ResponseEntity<?> getProjectTask(@PathVariable String projectIdentifier, @PathVariable String projectSequence){
+    ProjectTask projectTask = projectTaskService.findPTByProjectSequence(projectIdentifier, projectSequence);
+    ProjectTaskResponse projectTaskResponse = BeanMapper.map(projectTask, ProjectTaskResponse.class);
+
+    return new ResponseEntity<ProjectTaskResponse>(projectTaskResponse, HttpStatus.OK);
+  }
+
 }
