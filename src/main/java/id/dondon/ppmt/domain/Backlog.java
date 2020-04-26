@@ -40,7 +40,7 @@ public class Backlog implements Serializable {
   @JsonIgnore
   private Project project;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = BacklogField.BACKLOG)
+  @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = BacklogField.BACKLOG, orphanRemoval = true)
   private List<ProjectTask> projectTasks = new ArrayList<>();
 
   public Backlog() {

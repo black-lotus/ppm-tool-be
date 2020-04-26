@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -73,10 +74,17 @@ public class BacklogController {
     if (errorMap != null) return errorMap;
 
     ProjectTask projectTask = BeanMapper.map(projectTaskRequest, ProjectTask.class);
-    ProjectTask updatedTask = projectTaskService.updateByProjectSequence(projectTask, projectIdentifier, projectSequence);
+    ProjectTask updatedTask = projectTaskService.updateProjectTaskByProjectSequence(projectTask, projectIdentifier, projectSequence);
     ProjectTaskResponse projectTaskResponse = BeanMapper.map(updatedTask, ProjectTaskResponse.class);
 
     return new ResponseEntity<ProjectTaskResponse>(projectTaskResponse, HttpStatus.OK);
+  }
+
+  @DeleteMapping(ApiPath.REMOVE_PROJECT_TASK)
+  public ResponseEntity<?> deleteProjectTask(@PathVariable String projectIdentifier, @PathVariable String projectSequence){
+    projectTaskService.deleteProjectTaskByProjectSequence(projectIdentifier, projectSequence);
+
+    return new ResponseEntity<String>("Project Task "+projectSequence+" was deleted successfully", HttpStatus.OK);
   }
 
 }

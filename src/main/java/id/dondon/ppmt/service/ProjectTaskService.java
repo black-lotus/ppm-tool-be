@@ -6,6 +6,7 @@ import id.dondon.ppmt.exceptions.ProjectNotFoundException;
 import id.dondon.ppmt.repository.BacklogRepository;
 import id.dondon.ppmt.repository.ProjectTaskRepository;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -76,18 +77,8 @@ public class ProjectTaskService {
     return projectTask;
   }
 
-  public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String projectIdentifier, String projectSequence) {
-    // make sure we are searching on an existing backlog
-    Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
-    if (backlog == null) {
-      throw new ProjectNotFoundException("Project with ID: '"+projectIdentifier+"' does not exist");
-    }
-
-    ProjectTask projectTask = projectTaskRepository.findByProjectSequence(projectSequence);
-    if (projectTask == null) {
-      throw new ProjectNotFoundException("Project Task '"+projectSequence+"' not found");
-    }
-
+  public ProjectTask updateProjectTaskByProjectSequence(ProjectTask updatedTask, String projectIdentifier, String projectSequence) {
+    ProjectTask projectTask = findProjectTaskByProjectSequence(projectIdentifier, projectSequence);
     projectTask.setPriority(updatedTask.getPriority());
     projectTask.setSummary(updatedTask.getSummary());
     projectTask.setAcceptanceCriteria(updatedTask.getAcceptanceCriteria());
@@ -97,6 +88,12 @@ public class ProjectTaskService {
     projectTask.setUpdatedAt(new Date());
 
     return projectTaskRepository.save(projectTask);
+  }
+
+  public void deleteProjectTaskByProjectSequence(String projectIdentifier, String projectSequence){
+    ProjectTask projectTask = findProjectTaskByProjectSequence(projectIdentifier, projectSequence);
+
+    projectTaskRepository.delete(projectTask);
   }
 
 }

@@ -45,7 +45,7 @@ public class ProjectTask implements Serializable {
   @Column(name = ProjectTaskField.UPDATED_AT)
   private Date updatedAt;
 
-  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = ProjectTaskField.BACKLOG_ID, updatable = false, nullable = false)
   @JsonIgnore
   private Backlog backlog;
