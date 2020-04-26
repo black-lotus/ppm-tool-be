@@ -1,6 +1,7 @@
 package id.dondon.ppmt.model.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
@@ -35,6 +36,7 @@ public class ProjectResponse implements Serializable {
   @JsonFormat(pattern = "yyyy-MM-dd")
   private Date updatedAt;
 
+  @JsonIgnore
   @JsonProperty("backlog")
   private BacklogResponse backlog;
 
