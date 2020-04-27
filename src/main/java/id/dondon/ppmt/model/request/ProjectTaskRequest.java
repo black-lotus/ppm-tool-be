@@ -3,6 +3,8 @@ package id.dondon.ppmt.model.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class ProjectTaskRequest implements Serializable {
 
@@ -11,6 +13,7 @@ public class ProjectTaskRequest implements Serializable {
   @JsonProperty("project_sequence")
   private String projectSequence;
 
+  @NotBlank(message = "Please include a project summary")
   @JsonProperty("summary")
   private String summary;
 
@@ -26,6 +29,8 @@ public class ProjectTaskRequest implements Serializable {
   @JsonProperty("due_date")
   private Date dueDate;
 
+  @NotBlank(message = "Project Identifier is required")
+  @Size(min =4, max=5, message = "Please use 4 to 5 characters")
   @JsonProperty("project_identifier")
   private String projectIdentifier;
 
