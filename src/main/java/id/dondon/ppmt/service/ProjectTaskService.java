@@ -53,6 +53,12 @@ public class ProjectTaskService {
   }
 
   public Iterable<ProjectTask>findBacklogByProjectIdentifier(String projectIdentifier) {
+    // make sure we are searching on an existing backlog
+    Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
+    if (backlog == null) {
+      throw new ProjectNotFoundException("Project with ID: '"+projectIdentifier+"' does not exist");
+    }
+
     return projectTaskRepository.findByProjectIdentifierOrderByPriority(projectIdentifier);
   }
 
