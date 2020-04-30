@@ -13,5 +13,7 @@ public interface ApiPath {
   String GET_PROJECT_TASK = "/{projectIdentifier}/{projectSequence}";
   String UPDATE_PROJECT_TASK = "/{projectIdentifier}/{projectSequence}";
   String REMOVE_PROJECT_TASK = "/{projectIdentifier}/{projectSequence}";
+  String BASE_USERS = BASE_PATH + "/users";
+  String USER_REGISTER = "register";
 
 }
