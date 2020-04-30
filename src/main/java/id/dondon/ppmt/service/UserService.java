@@ -1,6 +1,7 @@
 package id.dondon.ppmt.service;
 
 import id.dondon.ppmt.domain.User;
+import id.dondon.ppmt.exceptions.UsernameAlreadyExistsException;
 import id.dondon.ppmt.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,15 @@ public class UserService {
   }
 
   public User saveUser(User newUser) {
-    newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+    try {
+      newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 
-    // Username has to be unique (exception)
-
-    // Make sure that password and confirmPassword match
-    // We don't persist or show the confirmPassword
-    return userRepository.save(newUser);
+      // Make sure that password and confirmPassword match
+      // We don't persist or show the confirmPassword
+      return userRepository.save(newUser);
+    } catch (Exception e) {
+      throw new UsernameAlreadyExistsException("Username '"+newUser.getUsername()+"' already exists");
+    }
   }
 
 }
