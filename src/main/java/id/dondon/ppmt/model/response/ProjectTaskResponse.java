@@ -25,6 +25,7 @@ public class ProjectTaskResponse implements Serializable {
   private Integer priority;
 
   @JsonProperty("due_date")
+  @JsonFormat(pattern = "yyyy-MM-dd")
   private Date dueDate;
 
   @JsonProperty("project_identifier")
