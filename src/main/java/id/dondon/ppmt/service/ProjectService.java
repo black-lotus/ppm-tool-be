@@ -64,10 +64,14 @@ public class ProjectService {
         projectRepository.delete(project);
     }
 
-    public Project updateProject(Project project) {
+    public Project updateProject(Project project, String username) {
         Project existingProject = projectRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase());
         if (existingProject == null) {
-            throw new ProjectNotFoundException("Project not found");
+            throw new ProjectNotFoundException("Project with ID: '"+project.getProjectIdentifier()+"' cannot be updated because it doesn't exist");
+        }
+
+        if (!existingProject.getProjectLeader().equals(username)) {
+            throw new ProjectNotFoundException("Project not found in your account");
         }
 
         existingProject.setDescription(project.getDescription());

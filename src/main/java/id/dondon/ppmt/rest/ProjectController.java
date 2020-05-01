@@ -75,11 +75,11 @@ public class ProjectController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateProject(@Valid @RequestBody ProjectRequest projectRequest, BindingResult result) {
+    public ResponseEntity<?> updateProject(@Valid @RequestBody ProjectRequest projectRequest, Principal principal, BindingResult result) {
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
         if (errorMap != null) return errorMap;
 
-        Project newProject = projectService.updateProject(BeanMapper.map(projectRequest, Project.class));
+        Project newProject = projectService.updateProject(BeanMapper.map(projectRequest, Project.class), principal.getName());
         ProjectResponse projectResponse = BeanMapper.map(newProject, ProjectResponse.class);
 
         return new ResponseEntity<ProjectResponse>(projectResponse, HttpStatus.ACCEPTED);
