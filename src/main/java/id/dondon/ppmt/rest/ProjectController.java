@@ -49,16 +49,16 @@ public class ProjectController {
     }
 
     @GetMapping(ApiPath.FIND_PROJECT)
-    public ResponseEntity<?> getProjectById(@PathVariable String projectIdentifier) {
-        Project project = projectService.findProjectByIdentifier(projectIdentifier);
+    public ResponseEntity<?> getProjectById(@PathVariable String projectIdentifier, Principal principal) {
+        Project project = projectService.findProjectByIdentifier(projectIdentifier, principal.getName());
         ProjectResponse projectResponse = BeanMapper.map(project, ProjectResponse.class);
 
         return new ResponseEntity<ProjectResponse>(projectResponse, HttpStatus.OK);
     }
 
     @GetMapping(ApiPath.FIND_PROJECTS)
-    public Iterable<ProjectResponse> getAllProjects() {
-        Iterable<Project> projects = projectService.findAllProjects();
+    public Iterable<ProjectResponse> getAllProjects(Principal principal) {
+        Iterable<Project> projects = projectService.findAllProjects(principal.getName());
         List<ProjectResponse> projectResponses = new ArrayList<>();
         for (Project project : projects) {
             projectResponses.add(BeanMapper.map(project, ProjectResponse.class));
@@ -68,8 +68,8 @@ public class ProjectController {
     }
 
     @DeleteMapping(ApiPath.REMOVE_PROJECT)
-    public ResponseEntity<?> deleteProject(@PathVariable String projectIdentifier) {
-        projectService.deleteProjectByIdentifier(projectIdentifier);
+    public ResponseEntity<?> deleteProject(@PathVariable String projectIdentifier, Principal principal) {
+        projectService.deleteProjectByIdentifier(projectIdentifier, principal.getName());
 
         return new ResponseEntity<String>("Project "+projectIdentifier+" deleted successfully", HttpStatus.OK);
     }
