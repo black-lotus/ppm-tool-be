@@ -7,6 +7,7 @@ import id.dondon.ppmt.model.request.ProjectTaskRequest;
 import id.dondon.ppmt.model.response.ProjectTaskResponse;
 import id.dondon.ppmt.service.MapValidationErrorService;
 import id.dondon.ppmt.service.ProjectTaskService;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
@@ -37,20 +38,20 @@ public class BacklogController {
 
   @PostMapping(ApiPath.ADD_PROJECT_TASK)
   public ResponseEntity<?> addProjectTaskToBacklog(@Valid @RequestBody ProjectTaskRequest projectTaskRequest,
-      BindingResult result, @PathVariable String projectIdentifier){
+      @PathVariable String projectIdentifier, Principal principal, BindingResult result) {
     ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
     if (errorMap != null) return errorMap;
 
     ProjectTask projectTask = BeanMapper.map(projectTaskRequest, ProjectTask.class);
-    ProjectTask projectTaskSaved = projectTaskService.addProjectTask(projectIdentifier, projectTask);
+    ProjectTask projectTaskSaved = projectTaskService.addProjectTask(projectIdentifier, projectTask, principal.getName());
     ProjectTaskResponse projectTaskResponse = BeanMapper.map(projectTaskSaved, ProjectTaskResponse.class);
 
     return new ResponseEntity<ProjectTaskResponse>(projectTaskResponse, HttpStatus.CREATED);
   }
 
   @GetMapping(ApiPath.GET_PROJECT_TASKS)
-  public Iterable<ProjectTaskResponse> getProjectBacklog(@PathVariable String projectIdentifier){
-    Iterable<ProjectTask> projectTasks = projectTaskService.findBacklogByProjectIdentifier(projectIdentifier);
+  public Iterable<ProjectTaskResponse> getProjectBacklog(@PathVariable String projectIdentifier, Principal principal) {
+    Iterable<ProjectTask> projectTasks = projectTaskService.findBacklogByProjectIdentifier(projectIdentifier, principal.getName());
     List<ProjectTaskResponse> projectTaskResponses = new ArrayList<>();
     for (ProjectTask projectTask : projectTasks) {
       projectTaskResponses.add(BeanMapper.map(projectTask, ProjectTaskResponse.class));
@@ -60,29 +61,34 @@ public class BacklogController {
   }
 
   @GetMapping(ApiPath.GET_PROJECT_TASK)
-  public ResponseEntity<?> getProjectTask(@PathVariable String projectIdentifier, @PathVariable String projectSequence){
-    ProjectTask projectTask = projectTaskService.findProjectTaskByProjectSequence(projectIdentifier, projectSequence);
+  public ResponseEntity<?> getProjectTask(@PathVariable String projectIdentifier,
+      @PathVariable String projectSequence, Principal principal) {
+    ProjectTask projectTask = projectTaskService.findProjectTaskByProjectSequence(
+        projectIdentifier, projectSequence, principal.getName());
     ProjectTaskResponse projectTaskResponse = BeanMapper.map(projectTask, ProjectTaskResponse.class);
 
     return new ResponseEntity<ProjectTaskResponse>(projectTaskResponse, HttpStatus.OK);
   }
 
   @PatchMapping(ApiPath.UPDATE_PROJECT_TASK)
-  public ResponseEntity<?> updateProjectTask(@Valid @RequestBody ProjectTaskRequest projectTaskRequest, BindingResult result,
-      @PathVariable String projectIdentifier, @PathVariable String projectSequence ){
+  public ResponseEntity<?> updateProjectTask(@Valid @RequestBody ProjectTaskRequest projectTaskRequest,
+      BindingResult result, @PathVariable String projectIdentifier,
+      @PathVariable String projectSequence, Principal principal) {
     ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
     if (errorMap != null) return errorMap;
 
     ProjectTask projectTask = BeanMapper.map(projectTaskRequest, ProjectTask.class);
-    ProjectTask updatedTask = projectTaskService.updateProjectTaskByProjectSequence(projectTask, projectIdentifier, projectSequence);
+    ProjectTask updatedTask = projectTaskService.updateProjectTaskByProjectSequence(projectTask,
+        projectIdentifier, projectSequence, principal.getName());
     ProjectTaskResponse projectTaskResponse = BeanMapper.map(updatedTask, ProjectTaskResponse.class);
 
     return new ResponseEntity<ProjectTaskResponse>(projectTaskResponse, HttpStatus.OK);
   }
 
   @DeleteMapping(ApiPath.REMOVE_PROJECT_TASK)
-  public ResponseEntity<?> deleteProjectTask(@PathVariable String projectIdentifier, @PathVariable String projectSequence){
-    projectTaskService.deleteProjectTaskByProjectSequence(projectIdentifier, projectSequence);
+  public ResponseEntity<?> deleteProjectTask(@PathVariable String projectIdentifier,
+      @PathVariable String projectSequence, Principal principal) {
+    projectTaskService.deleteProjectTaskByProjectSequence(projectIdentifier, projectSequence, principal.getName());
 
     return new ResponseEntity<String>("Project Task "+projectSequence+" was deleted successfully", HttpStatus.OK);
   }

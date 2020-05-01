@@ -6,7 +6,6 @@ import id.dondon.ppmt.exceptions.ProjectNotFoundException;
 import id.dondon.ppmt.repository.BacklogRepository;
 import id.dondon.ppmt.repository.ProjectTaskRepository;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -16,15 +15,18 @@ public class ProjectTaskService {
 
   private final BacklogRepository backlogRepository;
   private final ProjectTaskRepository projectTaskRepository;
+  private final ProjectService projectService;
 
   public ProjectTaskService(BacklogRepository backlogRepository,
-      ProjectTaskRepository projectTaskRepository) {
+      ProjectTaskRepository projectTaskRepository,
+      ProjectService projectService) {
     this.backlogRepository = backlogRepository;
     this.projectTaskRepository = projectTaskRepository;
+    this.projectService = projectService;
   }
 
-  public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
-    Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
+  public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask, String username) {
+    Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier, username).getBacklog();
     if (backlog == null) {
       throw new ProjectNotFoundException("Project with ID: '"+projectIdentifier+"' does not exist");
     }
@@ -45,16 +47,16 @@ public class ProjectTaskService {
       projectTask.setStatus("TO_DO");
     }
 
-    if (Objects.isNull(projectTask.getPriority())) {
+    if (Objects.isNull(projectTask.getPriority()) || projectTask.getPriority() == 0) {
       projectTask.setPriority(3);
     }
 
     return projectTaskRepository.save(projectTask);
   }
 
-  public Iterable<ProjectTask>findBacklogByProjectIdentifier(String projectIdentifier) {
+  public Iterable<ProjectTask>findBacklogByProjectIdentifier(String projectIdentifier, String username) {
     // make sure we are searching on an existing backlog
-    Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
+    Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier, username).getBacklog();
     if (backlog == null) {
       throw new ProjectNotFoundException("Project with ID: '"+projectIdentifier+"' does not exist");
     }
@@ -62,9 +64,9 @@ public class ProjectTaskService {
     return projectTaskRepository.findByProjectIdentifierOrderByPriority(projectIdentifier);
   }
 
-  public ProjectTask findProjectTaskByProjectSequence(String projectIdentifier, String projectSequence){
+  public ProjectTask findProjectTaskByProjectSequence(String projectIdentifier, String projectSequence, String username) {
     // make sure we are searching on an existing backlog
-    Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
+    Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier, username).getBacklog();
     if (backlog == null) {
       throw new ProjectNotFoundException("Project with ID: '"+projectIdentifier+"' does not exist");
     }
@@ -83,8 +85,8 @@ public class ProjectTaskService {
     return projectTask;
   }
 
-  public ProjectTask updateProjectTaskByProjectSequence(ProjectTask updatedTask, String projectIdentifier, String projectSequence) {
-    ProjectTask projectTask = findProjectTaskByProjectSequence(projectIdentifier, projectSequence);
+  public ProjectTask updateProjectTaskByProjectSequence(ProjectTask updatedTask, String projectIdentifier, String projectSequence, String username) {
+    ProjectTask projectTask = findProjectTaskByProjectSequence(projectIdentifier, projectSequence, username);
     projectTask.setPriority(updatedTask.getPriority());
     projectTask.setSummary(updatedTask.getSummary());
     projectTask.setAcceptanceCriteria(updatedTask.getAcceptanceCriteria());
@@ -96,8 +98,8 @@ public class ProjectTaskService {
     return projectTaskRepository.save(projectTask);
   }
 
-  public void deleteProjectTaskByProjectSequence(String projectIdentifier, String projectSequence){
-    ProjectTask projectTask = findProjectTaskByProjectSequence(projectIdentifier, projectSequence);
+  public void deleteProjectTaskByProjectSequence(String projectIdentifier, String projectSequence, String username) {
+    ProjectTask projectTask = findProjectTaskByProjectSequence(projectIdentifier, projectSequence, username);
 
     projectTaskRepository.delete(projectTask);
   }
