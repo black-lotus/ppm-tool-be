@@ -45,6 +45,13 @@ public class Project implements Serializable {
     @JsonIgnore
     private Backlog backlog;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private User user;
+
+    @Column(name = ProjectField.PROJECT_LEADER)
+    private String projectLeader;
+
     public Project() {
     }
 
@@ -120,6 +127,22 @@ public class Project implements Serializable {
         this.backlog = backlog;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getProjectLeader() {
+        return projectLeader;
+    }
+
+    public void setProjectLeader(String projectLeader) {
+        this.projectLeader = projectLeader;
+    }
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = new Date();
@@ -142,6 +165,8 @@ public class Project implements Serializable {
             ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +
             ", backlog=" + backlog +
+            ", user=" + user +
+            ", projectLeader='" + projectLeader + '\'' +
             '}';
     }
 }

@@ -7,6 +7,7 @@ import id.dondon.ppmt.model.request.ProjectRequest;
 import id.dondon.ppmt.model.response.ProjectResponse;
 import id.dondon.ppmt.service.MapValidationErrorService;
 import id.dondon.ppmt.service.ProjectService;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
@@ -36,11 +37,12 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody ProjectRequest projectRequest, BindingResult result) {
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody ProjectRequest projectRequest,
+         Principal principal, BindingResult result) {
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
         if (errorMap != null) return errorMap;
 
-        Project newProject = projectService.saveProject(BeanMapper.map(projectRequest, Project.class));
+        Project newProject = projectService.saveProject(BeanMapper.map(projectRequest, Project.class), principal.getName());
         ProjectResponse projectResponse = BeanMapper.map(newProject, ProjectResponse.class);
 
         return new ResponseEntity<ProjectResponse>(projectResponse, HttpStatus.CREATED);

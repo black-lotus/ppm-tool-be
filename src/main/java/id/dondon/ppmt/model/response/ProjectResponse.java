@@ -20,6 +20,9 @@ public class ProjectResponse implements Serializable {
   @JsonProperty("description")
   private String description;
 
+  @JsonProperty("project_leader")
+  private String projectLeader;
+
   @JsonProperty("start_date")
   @JsonFormat(pattern = "yyyy-MM-dd")
   private Date startDate;
@@ -115,6 +118,14 @@ public class ProjectResponse implements Serializable {
     this.updatedAt = updatedAt;
   }
 
+  public String getProjectLeader() {
+    return projectLeader;
+  }
+
+  public void setProjectLeader(String projectLeader) {
+    this.projectLeader = projectLeader;
+  }
+
   @Override
   public String toString() {
     return "ProjectResponse{" +
@@ -122,6 +133,7 @@ public class ProjectResponse implements Serializable {
         ", projectName='" + projectName + '\'' +
         ", projectIdentifier='" + projectIdentifier + '\'' +
         ", description='" + description + '\'' +
+        ", projectLeader='" + projectLeader + '\'' +
         ", startDate=" + startDate +
         ", endDate=" + endDate +
         ", createdAt=" + createdAt +
@@ -129,5 +141,4 @@ public class ProjectResponse implements Serializable {
         ", backlog=" + backlog +
         '}';
   }
-
 }

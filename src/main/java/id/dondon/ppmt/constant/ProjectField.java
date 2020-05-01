@@ -10,6 +10,6 @@ public interface ProjectField {
   String END_DATE = "end_date";
   String CREATED_AT = "created_at";
   String UPDATED_AT = "updated_at";
-  String BACKLOG = "backlog";
+  String PROJECT_LEADER = "project_leader";
 
 }
