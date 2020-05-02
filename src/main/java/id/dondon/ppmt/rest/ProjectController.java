@@ -38,7 +38,7 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<?> createNewProject(@Valid @RequestBody ProjectRequest projectRequest,
-         Principal principal, BindingResult result) {
+         BindingResult result, Principal principal) {
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
         if (errorMap != null) return errorMap;
 
@@ -75,7 +75,7 @@ public class ProjectController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateProject(@Valid @RequestBody ProjectRequest projectRequest, Principal principal, BindingResult result) {
+    public ResponseEntity<?> updateProject(@Valid @RequestBody ProjectRequest projectRequest, BindingResult result, Principal principal) {
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
         if (errorMap != null) return errorMap;
 
